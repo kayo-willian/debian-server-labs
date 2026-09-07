@@ -40,7 +40,7 @@ Commands are documented together with their purpose, expected behavior, observed
 | --- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 01  | [Installation, Configuration and SSH](./01-installation-configuration-ssh/README.md) | Installation and initial configuration of Debian Server, wireless networking, dedicated laboratory subnet, connectivity testing, and SSH administration |
 | 02  | [Monitoring Server with Zabbix](./02-monitoring-server-with-zabbix/README.md) | Deployment of a complete Zabbix monitoring stack on resource constrained hardware: MariaDB preparation, schema import, web frontend setup, agent-based monitoring of a second host, data retention, and troubleshooting |
-| 03  | [Firewall and Access Control](./03-firewall-access-control/Readme.md) | Securing the server with UFW: default deny policy, source address restrictions for SSH and the Zabbix frontend, agent traffic preservation, and multi client verification |
+| 03  | [Firewall and Access Control](./03-firewall-access-control/README.md) | Securing the server with UFW: default deny policy, source address restrictions for SSH and the Zabbix frontend, agent traffic preservation, and multi client verification |
 
 This table will grow as new laboratories are created.
 
