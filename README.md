@@ -38,7 +38,8 @@ Commands are documented together with their purpose, expected behavior, observed
 
 | Lab | Topic                                                                       | Description                                                                                                                                             |
 | --- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 01  | [Installation, Configuration and SSH](./01-installation-configuration-ssh/) | Installation and initial configuration of Debian Server, wireless networking, dedicated laboratory subnet, connectivity testing, and SSH administration |
+| 01  | [Installation, Configuration and SSH](./01-installation-configuration-ssh/README.md) | Installation and initial configuration of Debian Server, wireless networking, dedicated laboratory subnet, connectivity testing, and SSH administration |
+| 02  | [Monitoring Server with Zabbix](./02-monitoring-server-with-zabbix/README.md) | Deployment of a complete Zabbix monitoring stack on resource constrained hardware: MariaDB preparation, schema import, web frontend setup, agent-based monitoring of a second host, data retention, and troubleshooting |
 
 This table will grow as new laboratories are created.
 
