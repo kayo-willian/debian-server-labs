@@ -1,4 +1,4 @@
-# Lab 03: Monitoring Server with Zabbix
+# Lab 02: Monitoring Server with Zabbix
 
 Hands-on laboratory focused on deploying a complete monitoring solution on a resource constrained physical Debian Server, covering database preparation, repository configuration, service installation, web interface setup, distributed agent monitoring, and data retention management.
 
