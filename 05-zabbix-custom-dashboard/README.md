@@ -1,42 +1,34 @@
-# Lab 05 - Zabbix Custom Dashboard for Debian Server
+# Lab 05 - Zabbix Custom Dashboard
 
 ## Description
 
-This lab documents the creation of a custom monitoring dashboard in Zabbix for a physical Debian 13 server.
+This lab documents the creation and configuration of a custom Zabbix dashboard for the physical Debian Server.
 
-The server runs on a low-resource physical machine and is monitored through the Zabbix Agent. The dashboard was designed to provide a quick overview of CPU usage, memory usage, system load, uptime, historical performance, and active problems.
+Unlike the previous labs, which used the old network subnet, this laboratory uses the main local network:
 
-The lab also demonstrates how Zabbix transforms collected metrics into visual information through gauges, graphs, item values, triggers, and problems.
+```text
+192.168.1.0/24
+```
 
----
+The monitored Debian server is currently using:
 
-## Environment
+```text
+192.168.1.117
+```
 
-| Component         | Information                |
-| ----------------- | -------------------------- |
-| Operating System  | Debian 13                  |
-| Architecture      | x86_64                     |
-| Kernel            | Linux 6.12.107+deb13-amd64 |
-| Server IP         | `192.168.1.117`            |
-| Network Interface | `wlan0`                    |
-| CPU               | 4 cores                    |
-| Total Memory      | 1.79 GB                    |
-| Total Swap        | 1.51 GB                    |
-| Root Filesystem   | 26.07 GB                   |
-| Zabbix Agent      | 7.4.15                     |
-| Zabbix Host       | `Debian Server`            |
-| Monitoring        | Zabbix Agent               |
-| Filesystem        | ext4                       |
+The Zabbix installation and server configuration were documented in previous laboratories. This lab focuses specifically on **dashboard design, visualization, monitored metrics, widgets, and the interpretation of the information displayed by Zabbix**.
+
+The objective is to create a centralized dashboard that provides a quick overview of the server's current condition and historical behavior.
 
 ---
 
 ## 1. Dashboard Overview
 
-The dashboard was created specifically for the `Debian Server` host.
+The custom dashboard was designed specifically for the `Debian Server` host.
 
-The goal is to keep the most relevant monitoring information visible in a single interface instead of navigating through individual Zabbix sections.
+The dashboard combines different Zabbix widgets so that the most relevant information can be observed without navigating through individual monitoring pages.
 
-The dashboard contains:
+The final dashboard contains:
 
 * CPU utilization
 * Memory utilization
@@ -48,55 +40,130 @@ The dashboard contains:
 
 ![Dashboard Overview](screenshots/01-dashboard-overview.png)
 
-The dashboard provides both real-time values and historical information, making it possible to observe the current state of the server and identify changes in its behavior.
+The dashboard is organized to provide both **current-state information** and **historical information**.
+
+Gauge widgets provide an immediate visual representation of resource utilization, while the historical graphs make it possible to observe changes over time. The Problems widget provides visibility into events detected by Zabbix.
 
 ---
 
-## 2. CPU Monitoring
+## 2. Dashboard Layout
 
-CPU utilization is monitored through a gauge widget.
+The dashboard was organized into seven main widgets:
 
-The gauge provides a quick indication of how much processing capacity is currently being used by the server.
+| Widget             | Purpose                                       |
+| ------------------ | --------------------------------------------- |
+| CPU Utilization    | Displays current CPU usage                    |
+| Memory Utilization | Displays current memory usage                 |
+| System Uptime      | Displays how long the server has been running |
+| Load Average       | Displays the current Linux load average       |
+| CPU Graph          | Displays CPU activity over time               |
+| Memory Graph       | Displays memory usage over time               |
+| Problems           | Displays detected Zabbix problems             |
 
-The configured thresholds are:
-
-* 70%: warning level
-* 90%: high utilization
-
-![CPU Gauge](screenshots/02-cpu-gauge.png)
-
-During normal operation, the server showed low CPU utilization.
-
-The monitored system has 4 CPU cores and normally operates with a large amount of idle CPU capacity.
-
----
-
-## 3. Memory Monitoring
-
-Memory utilization is monitored through a dedicated gauge.
-
-This allows the current percentage of used memory to be observed without navigating through the host's individual items.
-
-![Memory Gauge](screenshots/03-memory-gauge.png)
-
-At the time of the monitoring snapshot, the server had:
-
-* Total memory: 1.79 GB
-* Available memory: 1.19 GB
-* Memory utilization: 33.7464%
-* Available memory: 66.2536%
-
-The server also has 1.51 GB of configured swap.
+The intention was to keep the dashboard simple enough to be read quickly while still providing enough information to investigate the server's current state.
 
 ---
 
-## 4. Load Average
+## 3. CPU Utilization
 
-The dashboard also displays the Linux load average as an Item value widget.
+The CPU utilization widget displays the current percentage of CPU resources being used by the Debian server.
 
-![Load Average](screenshots/04-load-average.png)
+The server has:
 
-The monitored values at the time of the snapshot were:
+```text
+4 CPU cores
+```
+
+At the time the dashboard data was collected, the server reported:
+
+```text
+CPU utilization: 6.6633%
+CPU idle: 93.3367%
+```
+
+Other CPU metrics available through Zabbix included:
+
+```text
+CPU user:    4.6056%
+CPU system:  1.6895%
+CPU iowait:  0.2059%
+CPU softirq: 0.05043%
+```
+
+The gauge was configured with thresholds at:
+
+```text
+70%
+90%
+```
+
+These thresholds provide visual reference points for increasing CPU utilization.
+
+A CPU stress test was also performed during the laboratory using:
+
+```bash
+stress --cpu 4 --timeout 60
+```
+
+The purpose was to generate CPU activity and observe how the dashboard responds to an increase in workload.
+
+---
+
+## 4. Memory Utilization
+
+The memory utilization widget displays the percentage of RAM currently being used by the server.
+
+The monitored server has:
+
+```text
+Total memory: 1.79 GB
+```
+
+At the time of the captured monitoring data:
+
+```text
+Memory utilization: 33.7464%
+Available memory: 1.19 GB
+Available memory: 66.2536%
+```
+
+The server also had:
+
+```text
+Total swap: 1.51 GB
+Free swap: 1.51 GB
+Free swap: 100%
+```
+
+The memory gauge was configured to provide a quick visual indication of memory consumption.
+
+---
+
+## 5. System Uptime
+
+The dashboard includes an Item value widget dedicated to system uptime.
+
+The server boot time recorded by Zabbix was:
+
+```text
+24-09-2026 10:42:09
+```
+
+The uptime at the time of the captured data was approximately:
+
+```text
+01:41:05
+```
+
+Displaying uptime directly on the dashboard makes it possible to quickly determine whether the server has recently restarted.
+
+---
+
+## 6. Load Average
+
+The Load Average widget displays the Linux load average for three different periods.
+
+The captured values were:
 
 | Period     | Load Average |
 | ---------- | -----------: |
@@ -104,91 +171,107 @@ The monitored values at the time of the snapshot were:
 | 5 minutes  |       0.2549 |
 | 15 minutes |       0.3608 |
 
-Load average provides another way of observing the workload experienced by the system.
+Load average complements CPU utilization by providing another view of system workload.
 
-Unlike CPU utilization, load average represents the amount of work waiting for or using system resources over time.
-
----
-
-## 5. CPU Historical Graph
-
-A historical graph was added to observe CPU behavior over time.
-
-![CPU Historical Graph](screenshots/05-cpu-graph.png)
-
-The graph allows different CPU states to be observed, including:
-
-* User CPU time
-* System CPU time
-* Idle CPU time
-* I/O wait
-* Soft IRQ
-* Overall CPU utilization
-
-At the time of the monitoring snapshot, the server showed:
-
-* CPU utilization: 6.6633%
-* CPU idle: 93.3367%
-* CPU user: 4.6056%
-* CPU system: 1.6895%
-* CPU iowait: 0.2059%
-* CPU softirq: 0.05043%
-
-A CPU stress test was also performed using the `stress` utility with all 4 CPU cores to generate a measurable workload and observe the monitoring response.
+The three values allow the current workload to be compared with the recent workload over longer intervals.
 
 ---
 
-## 6. Memory Historical Graph
+## 7. CPU Historical Graph
 
-A historical graph was also created for memory usage.
+A historical CPU graph was added to the dashboard to complement the instantaneous CPU gauge.
 
-![Memory Historical Graph](screenshots/06-memory-graph.png)
+While the gauge shows the current state, the graph makes it possible to observe how CPU activity changes over time.
 
-The graph makes it possible to observe changes in memory utilization instead of looking only at the current value.
+The graph can be used to identify:
 
-This is useful for identifying gradual memory consumption and changes caused by applications or system processes.
+* Temporary CPU spikes
+* Sustained CPU usage
+* Periods of low activity
+* Effects of workloads and tests
+* Changes in CPU behavior over time
+
+This is particularly useful when investigating an issue that is no longer occurring at the moment of analysis.
 
 ---
 
-## 7. Problem Detection
+## 8. Memory Historical Graph
 
-The dashboard includes a Problems widget filtered specifically for the `Debian Server` host.
+The memory graph provides historical information about RAM utilization.
 
-![Zabbix Problem](screenshots/07-problems.png)
+The graph complements the memory gauge because the gauge only represents the current state, while the graph can reveal changes over time.
 
-During the lab, Zabbix detected a real problem:
+It can be used to identify:
 
-**Linux: Number of installed packages has been changed**
+* Increasing memory consumption
+* Sudden changes in memory usage
+* Periods of high utilization
+* Long-term usage patterns
 
-The event was generated after the monitored number of installed packages changed.
+For a server with only 1.79 GB of RAM, observing memory behavior over time is particularly useful.
 
-The problem demonstrated the relationship between Zabbix monitoring components:
+---
+
+## 9. Problems Widget
+
+The Problems widget was configured to display problems associated with the:
 
 ```text
-Item
-  ↓
+Debian Server
+```
+
+During the laboratory, Zabbix detected a real problem related to a change in the number of installed packages:
+
+```text
+Linux: Number of installed packages has been changed
+```
+
+The captured event had:
+
+```text
+Event ID: 88
+Trigger ID: 32564
+Duration at capture: 9m 35s
+```
+
+The server currently reported:
+
+```text
+Installed packages: 513
+```
+
+This provided a practical demonstration of how a change detected by an item can result in a Zabbix trigger and subsequently appear as a problem on the dashboard.
+
+The monitoring flow can be represented as:
+
+```text
+Monitored Item
+      ↓
 Trigger
-  ↓
+      ↓
 Event
-  ↓
+      ↓
 Problem
-  ↓
+      ↓
 Dashboard
 ```
 
-The host currently reports 513 installed packages.
-
-This demonstrates that the dashboard is not only displaying performance metrics. It can also expose events generated by Zabbix triggers.
+This is one of the most important functions of the Problems widget because it allows operational events to be seen alongside the server's performance metrics.
 
 ---
 
-## 8. Network Monitoring
+## 10. Network Information
 
-The Debian server uses the `wlan0` interface.
+Although the dashboard focuses primarily on system resources, the monitored host also provides network information through Zabbix.
 
-Zabbix automatically discovered and monitors several network-related metrics.
+The Debian server uses:
 
-At the time of the snapshot:
+```text
+Interface: wlan0
+IP: 192.168.1.117
+```
+
+The captured network metrics included:
 
 | Metric                     |      Value |
 | -------------------------- | ---------: |
@@ -198,213 +281,252 @@ At the time of the snapshot:
 | Outgoing errors            |          0 |
 | Incoming discarded packets |          5 |
 | Outgoing discarded packets |          0 |
-| Interface status           |         Up |
+| Operational status         |         Up |
 
-The network interface is displayed as operational and available to the Zabbix Agent.
-
----
-
-## 9. Storage and Filesystem Monitoring
-
-The root filesystem is formatted as `ext4`.
-
-The monitored storage values were:
-
-| Metric          |    Value |
-| --------------- | -------: |
-| Total space     | 26.07 GB |
-| Used space      |  1.93 GB |
-| Available space | 22.79 GB |
-| Used percentage |  7.7952% |
-| Free inodes     |   97.43% |
-
-The main storage device is `mmcblk2`.
-
-Zabbix also detected the associated boot partitions:
-
-* `mmcblk2boot0`
-* `mmcblk2boot1`
-
-These boot partitions reported no significant activity during the monitoring snapshot.
+The network information provides additional context when analyzing the server's behavior.
 
 ---
 
-## 10. System Information
+## 11. Storage Information
 
-The Zabbix host provides several system-level metrics.
+The dashboard's monitored host also provides storage metrics.
 
-Current information includes:
-
-* Operating system: Debian 13
-* Kernel: Linux 6.12.107+deb13-amd64
-* Architecture: x86_64
-* CPU cores: 4
-* Installed packages: 513
-* Processes: 227
-* Running processes: 1
-* Logged-in users: 3
-
-The system boot time recorded by Zabbix was:
-
-`24-09-2026 10:42:09`
-
----
-
-## 11. Server Uptime
-
-The dashboard displays the server uptime directly through an Item value widget.
-
-At the time of the monitoring snapshot, the server had been running for approximately:
-
-`01:41:05`
-
-This provides a quick way to verify whether the server has recently restarted.
-
----
-
-## 12. Zabbix Agent
-
-The Debian server is monitored using Zabbix Agent 7.4.15.
-
-The agent is configured to accept connections from the Zabbix server and uses the hostname:
-
-`Debian Server`
-
-The agent was successfully detected by Zabbix and reported as available.
-
-The monitoring configuration uses:
+The main storage device is:
 
 ```text
-Server=127.0.0.1,192.168.1.117
-ServerActive=127.0.0.1
-Hostname=Debian Server
+mmcblk2
 ```
 
-This configuration allows the Zabbix server to communicate with the agent through the server's network address.
-
----
-
-## 13. Dashboard Color Convention
-
-The dashboard uses visual conventions to make different types of information easier to identify.
-
-| Element          | Representation |
-| ---------------- | -------------- |
-| Download         | Blue           |
-| Upload           | Green          |
-| Available memory | Green          |
-| CPU utilization  | Orange         |
-| Problems         | Red            |
-
-The colors are used as visual indicators and do not replace the actual metric values.
-
----
-
-## 14. Monitoring Workflow
-
-The monitoring process implemented in this lab can be summarized as:
+At the time of the monitoring snapshot:
 
 ```text
-Debian Server
-      │
-      │ Zabbix Agent
-      ▼
-Zabbix Server
-      │
-      ├── CPU metrics
-      ├── Memory metrics
-      ├── Network metrics
-      ├── Storage metrics
-      ├── System metrics
-      └── Trigger events
-              │
-              ▼
-       Custom Dashboard
+Disk utilization: 4.9531%
+Write rate: 5.4998 writes/s
 ```
 
-The dashboard acts as the visualization layer for the information collected from the physical Debian server.
+The root filesystem is:
+
+```text
+/
+```
+
+with:
+
+```text
+Filesystem: ext4
+Total: 26.07 GB
+Used: 1.93 GB
+Available: 22.79 GB
+Usage: 7.7952%
+Free inodes: 97.43%
+```
+
+These metrics are available through the host's monitoring data even though storage is not one of the primary widgets in this dashboard.
 
 ---
 
-## 15. What I Learned
+## 12. Server Monitoring Snapshot
 
-This lab provided practical experience with:
+The following values represent the server at the time the dashboard was documented:
 
-* Creating custom Zabbix dashboards
-* Configuring dashboard widgets
-* Monitoring CPU utilization
-* Monitoring memory utilization
-* Monitoring Linux load average
-* Creating historical performance graphs
-* Monitoring network interfaces
-* Monitoring storage and filesystems
-* Understanding Zabbix Items
-* Understanding Zabbix Triggers
-* Understanding Zabbix Problems
-* Working with the Zabbix Agent
-* Interpreting Linux server metrics
-* Using monitoring data to observe system behavior
-
----
-
-## 16. Important Observations
-
-The server is a low-resource physical machine with approximately 1.79 GB of RAM and 4 CPU cores.
-
-Despite its limited hardware, the system provides enough resources to run Debian 13 together with the Zabbix monitoring stack used in this laboratory.
-
-The monitoring data also demonstrates that Zabbix can collect a large amount of information from a Linux server without requiring a graphical interface on the monitored machine.
-
----
-
-## 17. Current Monitoring Snapshot
-
-At the time this laboratory was documented:
-
-| Category              |     Value |
+| Metric                |     Value |
 | --------------------- | --------: |
 | CPU utilization       |   6.6633% |
 | CPU idle              |  93.3367% |
 | Memory utilization    |  33.7464% |
 | Available memory      |   1.19 GB |
+| Total memory          |   1.79 GB |
+| Total swap            |   1.51 GB |
 | Root filesystem usage |   7.7952% |
+| Root filesystem total |  26.07 GB |
 | Load average 1m       |    0.1797 |
 | Load average 5m       |    0.2549 |
 | Load average 15m      |    0.3608 |
+| CPU cores             |         4 |
 | Installed packages    |       513 |
 | Processes             |       227 |
-| CPU cores             |         4 |
+| Logged-in users       |         3 |
 | Zabbix Agent          |    7.4.15 |
-| Agent status          | Available |
+| Agent availability    | Available |
+
+These values represent a snapshot of the monitored system and are expected to change as the server operates.
 
 ---
 
-## 18. Future Improvements
+## 13. Dashboard Color Convention
 
-Possible extensions for this laboratory include:
+The dashboard uses colors to make different types of information easier to distinguish.
 
-* Add network traffic graphs
-* Add disk I/O graphs
-* Create additional custom triggers
-* Monitor specific services
-* Monitor Apache
-* Monitor MariaDB
-* Add disk space alerts
-* Add memory threshold alerts
-* Add network availability alerts
-* Create a more detailed infrastructure dashboard
-* Add additional Linux security monitoring
+The visual convention used during the lab was:
+
+| Information      | Color  |
+| ---------------- | ------ |
+| Download         | Blue   |
+| Upload           | Green  |
+| Available memory | Green  |
+| CPU utilization  | Orange |
+| Problems         | Red    |
+
+The colors are used as visual indicators. The actual metric values remain the primary source of information.
 
 ---
 
-## Project Status
+## 14. Dashboard Design Goals
+
+The dashboard was designed around three main goals:
+
+### Visibility
+
+The most important server metrics should be visible immediately after opening the dashboard.
+
+### Simplicity
+
+The dashboard should avoid unnecessary information and focus on metrics useful for quickly understanding the server's condition.
+
+### Troubleshooting
+
+The dashboard should provide enough information to identify abnormal behavior and determine when further investigation is necessary.
+
+The combination of gauges, Item values, graphs, and the Problems widget provides different levels of information without requiring multiple monitoring pages.
+
+---
+
+## 15. Real-Time vs Historical Monitoring
+
+One of the main concepts demonstrated by this dashboard is the difference between current and historical monitoring.
+
+### Current values
+
+The gauges and Item value widgets provide an immediate view of the server.
+
+Examples:
+
+```text
+CPU utilization
+Memory utilization
+Load average
+Uptime
+```
+
+### Historical values
+
+The CPU and memory graphs provide information about what happened over time.
+
+This distinction is important when monitoring servers because a problem may have already disappeared by the time an administrator investigates it.
+
+For example, a CPU spike may no longer be visible on the CPU gauge, but it can still be observed in the historical graph.
+
+---
+
+## 16. Zabbix Items, Triggers and Problems
+
+The dashboard also helped demonstrate the relationship between the main Zabbix monitoring components.
+
+### Items
+
+Items collect individual pieces of information from the monitored host.
+
+Examples include:
+
+```text
+CPU utilization
+Memory utilization
+Network traffic
+Filesystem usage
+Load average
+Number of installed packages
+```
+
+### Triggers
+
+Triggers evaluate collected values and conditions.
+
+A trigger can determine when a monitored condition should generate an event.
+
+### Problems
+
+When a trigger condition is met, Zabbix can generate a problem that becomes visible through the Problems widget.
+
+This makes the dashboard more than a collection of graphs. It also becomes a place where detected conditions can be investigated.
+
+---
+
+## 17. Dashboard Result
+
+The final dashboard provides a centralized view of the Debian server's monitoring data.
+
+It combines:
+
+```text
+                    Debian Server
+                         │
+          ┌──────────────┼──────────────┐
+          │              │              │
+        CPU           Memory          System
+          │              │              │
+       Gauge          Gauge       Uptime / Load
+          │              │              │
+          └──────────────┼──────────────┘
+                         │
+                   Historical Data
+                         │
+                  CPU / Memory Graphs
+                         │
+                         ▼
+                    Problems
+                         │
+                         ▼
+                 Custom Dashboard
+```
+
+The result is a dashboard that can be used as a central monitoring interface for the physical Debian server.
+
+---
+
+## 18. What I Learned
+
+This laboratory focused on the practical use of Zabbix dashboards rather than the installation of the monitoring stack.
+
+The main concepts practiced were:
+
+* Creating a custom Zabbix dashboard
+* Selecting appropriate dashboard widgets
+* Configuring Item value widgets
+* Configuring gauge widgets
+* Configuring historical graphs
+* Filtering the Problems widget by host
+* Understanding the difference between current and historical metrics
+* Interpreting CPU utilization
+* Interpreting memory utilization
+* Interpreting Linux load average
+* Observing server uptime
+* Understanding Zabbix Items
+* Understanding Zabbix Triggers
+* Understanding Zabbix Problems
+* Using dashboard visual conventions
+* Generating CPU activity and observing the monitoring response
+* Using a dashboard as a centralized monitoring interface
+
+---
+
+## 19. Project Status
 
 **Completed**
 
-The Debian server is successfully monitored by Zabbix and the custom dashboard provides a centralized view of system performance, resources, network activity, storage, uptime, and detected problems.
+The custom Zabbix dashboard was successfully created for the `Debian Server` host.
 
-## Lab Result
+The dashboard provides a centralized view of CPU utilization, memory utilization, uptime, load average, historical CPU and memory data, and detected problems.
 
-This laboratory resulted in a functional custom Zabbix dashboard for a physical Debian 13 server.
+The monitored server is using the main local network:
 
-The project demonstrates the complete monitoring flow from the Linux host and Zabbix Agent to the Zabbix Server, triggers, problems, and final dashboard visualization.
+```text
+192.168.1.0/24
+```
+
+with the Debian server accessible at:
+
+```text
+192.168.1.117
+```
+
+This laboratory therefore represents the current version of the monitoring environment, replacing the old subnet configuration used in the previous labs.
