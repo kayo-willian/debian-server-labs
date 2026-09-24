@@ -42,6 +42,7 @@ Commands are documented together with their purpose, expected behavior, observed
 | 02  | [Monitoring Server with Zabbix](./02-monitoring-server-with-zabbix/README.md) | Deployment of a complete Zabbix monitoring stack on resource constrained hardware: MariaDB preparation, schema import, web frontend setup, agent-based monitoring of a second host, data retention, and troubleshooting |
 | 03  | [Firewall and Access Control](./03-firewall-access-control/README.md) | Securing the server with UFW: default deny policy, source address restrictions for SSH and the Zabbix frontend, agent traffic preservation, and multi client verification |
 | 04  | [Nginx Web Server](./04-nginx-web-server/README.md) | Installation and configuration of Nginx on Debian Server, custom web root and HTML page, non-default HTTP port, configuration validation, HTTP testing, logging, and Nginx Stub Status |
+| 05  | [Zabbix Custom Dashboard](./05-zabbix-custom-dashboard/README.md) | Creation and configuration of a custom Zabbix dashboard for the Debian Server, including CPU and memory gauges, uptime, load average, historical graphs, problem monitoring, dashboard layout, and visualization of system metrics |
 
 This table will grow as new laboratories are created.
 
