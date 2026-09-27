@@ -49,8 +49,7 @@ Commands are documented together with their purpose, expected behavior, observed
 | 09 | [Grafana Monitoring Dashboard](./09-grafana-monitoring-dashboard/README.md) | Creation and configuration of a monitoring dashboard in Grafana using Zabbix as the data source, including system metrics, web monitoring, Apache response monitoring, URL monitoring, and dashboard visualization |
 | 10 | [Grafana Removal and Resource Optimization](./10-grafana-removal-and-resource-optimization/README.md) | Removal of Grafana from the physical Debian Server to reduce resource consumption, analysis of memory usage, service cleanup, and preparation of the server for future infrastructure services |
 | 11 | [Migrating the Zabbix Monitoring Server to a Virtual Machine](./11-migrating-the-zabbix-monitoring-server-to-a-virtual-machine/README.md) | Migration of the Zabbix monitoring environment from the physical Debian Server to a dedicated Debian virtual machine, including database backup and restoration, configuration migration, Zabbix Web recovery, agent reconfiguration, service validation, and static IP configuration |
-
-
+| 12 | [Zabbix Removal and Server Cleanup](./12-zabbix-removal-and-server-cleanup/README.md) | Removal of the Zabbix Server stack from the physical Debian Server while preserving the Zabbix Agent for remote monitoring, including removal of the Zabbix frontend, MariaDB, Apache2, PHP, Grafana remnants, service cleanup, port verification, and final validation of the dedicated monitoring architecture |
 
 The first four laboratories were developed using the original isolated laboratory network. Starting with Lab 05, the project moved to the main local network to simplify communication between the server, administration workstation, and other devices used during the experiments.
 
