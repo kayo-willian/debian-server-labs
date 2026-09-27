@@ -167,11 +167,11 @@ The dashboard uses a short refresh interval and a recent time range to provide a
 
 ---
 
-## Dashboard JSON
+### Dashboard JSON
 
-The following section contains the complete exported Grafana dashboard JSON.
+The following Grafana dashboard JSON was generated with assistance from **Claude Sonnet 5** and adapted for the context of this laboratory.
 
-The JSON is included as part of the laboratory documentation to preserve the dashboard configuration and its panels.
+It is included below as part of the project's technical documentation and preserves the dashboard configuration used during the lab.
 
 ### Complete Dashboard JSON
 
