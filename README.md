@@ -46,6 +46,11 @@ Commands are documented together with their purpose, expected behavior, observed
 | 06  | [Apache Static Web Page](./06-apache-static-web-page/README.md)                                           | Installation and configuration of Apache2, creation of a custom static web page, HTTP validation, Zabbix Web Monitoring, response time monitoring, URL visualization, and dashboard integration                 |
 | 07  | [DHCP Reservation and IP Address Persistence](./07-dhcp-reservation-and-ip-address-persistence/README.md) | Investigation of a changing DHCP address, identification of the DHCP client, network configuration troubleshooting, recovery of connectivity, and configuration of a router-side DHCP reservation               |
 | 08 | [Grafana and Zabbix Integration](./08-grafana-zabbix-integration/README.md) | Installation and configuration of Grafana, Zabbix plugin integration, API Token authentication, JSON-RPC API testing, troubleshooting, and datasource validation |
+| 09 | [Grafana Monitoring Dashboard](./09-grafana-monitoring-dashboard/README.md) | Creation and configuration of a monitoring dashboard in Grafana using Zabbix as the data source, including system metrics, web monitoring, Apache response monitoring, URL monitoring, and dashboard visualization |
+| 10 | [Grafana Removal and Resource Optimization](./10-grafana-removal-and-resource-optimization/README.md) | Removal of Grafana from the physical Debian Server to reduce resource consumption, analysis of memory usage, service cleanup, and preparation of the server for future infrastructure services |
+| 11 | [Migrating the Zabbix Monitoring Server to a Virtual Machine](./11-migrating-the-zabbix-monitoring-server-to-a-virtual-machine/README.md) | Migration of the Zabbix monitoring environment from the physical Debian Server to a dedicated Debian virtual machine, including database backup and restoration, configuration migration, Zabbix Web recovery, agent reconfiguration, service validation, and static IP configuration |
+
+
 
 The first four laboratories were developed using the original isolated laboratory network. Starting with Lab 05, the project moved to the main local network to simplify communication between the server, administration workstation, and other devices used during the experiments.
 
