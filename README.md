@@ -45,6 +45,7 @@ Commands are documented together with their purpose, expected behavior, observed
 | 05  | [Zabbix Custom Dashboard](./05-zabbix-custom-dashboard/README.md)                                         | Creation and configuration of a custom Zabbix dashboard for the Debian Server, including CPU and memory gauges, uptime, load average, historical graphs, problem monitoring, web monitoring, and system metrics |
 | 06  | [Apache Static Web Page](./06-apache-static-web-page/README.md)                                           | Installation and configuration of Apache2, creation of a custom static web page, HTTP validation, Zabbix Web Monitoring, response time monitoring, URL visualization, and dashboard integration                 |
 | 07  | [DHCP Reservation and IP Address Persistence](./07-dhcp-reservation-and-ip-address-persistence/README.md) | Investigation of a changing DHCP address, identification of the DHCP client, network configuration troubleshooting, recovery of connectivity, and configuration of a router-side DHCP reservation               |
+08 | Grafana and Zabbix Integration | Installation and configuration of Grafana, Zabbix plugin integration, API Token authentication, JSON-RPC API testing, troubleshooting, and datasource validation
 
 The first four laboratories were developed using the original isolated laboratory network. Starting with Lab 05, the project moved to the main local network to simplify communication between the server, administration workstation, and other devices used during the experiments.
 
