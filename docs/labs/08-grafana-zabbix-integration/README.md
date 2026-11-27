@@ -1,5 +1,7 @@
 # Lab 08 - Grafana and Zabbix Integration
 
+[Português (Brasil)](../../../pt-BR/docs/laboratorios/08-integracao-grafana-zabbix/README.md) · [Lab index](../../README.md) · [Previous lab](../07-dhcp-reservation-and-ip-address-persistence/README.md) · [Next lab](../09-grafana-monitoring-dashboard/README.md)
+
 ## Overview
 
 This lab documents the installation and integration of Grafana with the existing Zabbix monitoring environment running on the Debian Server.
@@ -184,7 +186,7 @@ Grafana
 
 ## Installing the Zabbix Plugin
 
-Grafana requires a plugin to communicate with Zabbix.
+Grafana uses a plugin to communicate with Zabbix in this integration.
 
 The Alexander Zobnin Zabbix plugin was installed using:
 
@@ -368,7 +370,7 @@ Another error appeared during the investigation:
 basic auth is not supported for Zabbix v7.2 and later
 ```
 
-This helped identify that the authentication configuration needed to be corrected for the current Zabbix API version.
+This helped identify that the authentication configuration needed to be corrected for the Zabbix API version used.
 
 The Zabbix plugin was subsequently removed and reinstalled to restart the configuration from a clean state.
 
@@ -563,9 +565,9 @@ The important point is that Grafana accesses Zabbix through its web API. The Zab
 
 The Grafana and Zabbix integration was successfully completed.
 
-Grafana `13.2.2` is running on the Debian Server and communicates with Zabbix `7.4.15` through the Zabbix JSON-RPC API using the Alexander Zobnin Zabbix plugin `6.8.0` and an API Token.
+At this historical stage, Grafana `13.2.2` was running on the Debian Server and communicated with Zabbix `7.4.15` through the Zabbix JSON-RPC API using the Alexander Zobnin Zabbix plugin `6.8.0` and an API Token.
 
-The environment is now prepared for the next stage: querying Zabbix data in Grafana and creating custom visualization panels and dashboards.
+The environment was then prepared for the next stage: querying Zabbix data in Grafana and creating custom visualization panels and dashboards.
 
 ---
 

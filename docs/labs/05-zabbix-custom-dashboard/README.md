@@ -1,5 +1,7 @@
 # Lab 05 - Zabbix Custom Dashboard
 
+[Português (Brasil)](../../../pt-BR/docs/laboratorios/05-dashboard-personalizado-zabbix/README.md) · [Lab index](../../README.md) · [Previous lab](../04-nginx-web-server/README.md) · [Next lab](../06-apache-static-web-page/README.md)
+
 ## Description
 
 This lab documents the creation and configuration of a custom Zabbix dashboard for the physical Debian Server.
@@ -10,7 +12,7 @@ Unlike the previous labs, which used the old network subnet, this laboratory use
 192.168.1.0/24
 ```
 
-The monitored Debian server is currently using:
+The monitored Debian server was using at this stage:
 
 ```text
 192.168.1.117
@@ -234,7 +236,7 @@ Trigger ID: 32564
 Duration at capture: 9m 35s
 ```
 
-The server currently reported:
+The server reported at that time:
 
 ```text
 Installed packages: 513
@@ -517,7 +519,7 @@ The custom Zabbix dashboard was successfully created for the `Debian Server` hos
 
 The dashboard provides a centralized view of CPU utilization, memory utilization, uptime, load average, historical CPU and memory data, and detected problems.
 
-The monitored server is using the main local network:
+At this stage, the monitored server was using the main local network:
 
 ```text
 192.168.1.0/24
@@ -529,8 +531,8 @@ with the Debian server accessible at:
 192.168.1.117
 ```
 
-This laboratory therefore represents the current version of the monitoring environment, replacing the old subnet configuration used in the previous labs.
+This laboratory therefore represents the monitoring configuration at that stage, replacing the old subnet configuration used in the previous labs.
 
-[Screenshot gallery](../../../assets/images/05-zabbix-custom-dashboard/README.md)
+[Screenshot gallery](gallery.md)
 
 [Lab index](../../README.md) · [Repository overview](../../../README.md)

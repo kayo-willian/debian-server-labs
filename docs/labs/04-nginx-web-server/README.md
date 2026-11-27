@@ -1,5 +1,7 @@
 # Lab 04 — Nginx Web Server on Debian
 
+[Português (Brasil)](../../../pt-BR/docs/laboratorios/04-servidor-web-nginx/README.md) · [Lab index](../../README.md) · [Previous lab](../03-firewall-access-control/README.md) · [Next lab](../05-zabbix-custom-dashboard/README.md)
+
 ## Overview
 
 This laboratory consists of deploying and configuring **Nginx as a web server on Debian GNU/Linux**.
@@ -242,7 +244,7 @@ Defines the hostname associated with the server block.
 server_name _;
 ```
 
-The `_` is commonly used as a catch-all/default server name.
+The `_` is often used as a conventional name on a default server; default selection depends on the listen directive, not this name.
 
 ### `root`
 
@@ -432,14 +434,14 @@ Nginx provides:
 sudo nginx -T
 ```
 
-This command tests the configuration and prints the complete configuration currently loaded by Nginx.
+This command tests the configuration on disk and prints its complete contents; it is not a direct query of the running process's in-memory configuration.
 
 It was useful during the laboratory to confirm:
 
-* which configuration files were loaded
-* which port Nginx was listening on
+* which configuration files were included
+* which port was configured for listening
 * which document root was configured
-* which server block was active
+* which server block was configured
 * which locations were defined
 
 ---
@@ -800,6 +802,6 @@ The Debian package repository lists Nginx as an available package for Debian 13 
 
 **Completed**
 
-The Debian server is running Nginx as a functional HTTP server on port `8080`, serving a custom laboratory website and exposing a local `stub_status` endpoint for runtime information.
+At this historical stage, the Debian server was running Nginx as a functional HTTP server on port `8080`, serving a custom laboratory website and exposing a local `stub_status` endpoint for runtime information.
 
 [Lab index](../../README.md) · [Repository overview](../../../README.md)

@@ -1,5 +1,7 @@
 # Lab 10 - Grafana Removal and Resource Optimization
 
+[Português (Brasil)](../../../pt-BR/docs/laboratorios/10-remocao-do-grafana-e-otimizacao-de-recursos/README.md) · [Lab index](../../README.md) · [Previous lab](../09-grafana-monitoring-dashboard/README.md) · [Next lab](../11-migrating-the-zabbix-monitoring-server-to-a-virtual-machine/README.md)
+
 ## Overview
 
 This lab documents the removal of Grafana from the Debian Server laboratory environment after completing the Grafana and Zabbix integration documented in [Lab 09](../09-grafana-monitoring-dashboard/README.md).
@@ -174,9 +176,9 @@ Removing completed laboratory components helps maintain a cleaner environment an
 
 Grafana was successfully removed from the Debian Server environment after the completion of the Grafana dashboard laboratory.
 
-The Zabbix monitoring environment remains available for the server's monitoring requirements.
+The Zabbix monitoring environment remained available for the server's monitoring requirements.
 
-The resources previously allocated to Grafana can now be used by future laboratories and experiments.
+The resources previously allocated to Grafana could then be used by future laboratories and experiments.
 
 The Grafana configuration and documentation from [Lab 09](../09-grafana-monitoring-dashboard/README.md) remain available as a record of the completed integration.
 

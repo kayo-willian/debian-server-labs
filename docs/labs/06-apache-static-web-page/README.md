@@ -1,10 +1,12 @@
 # Lab 06 - Apache Static Web Page
 
+[Português (Brasil)](../../../pt-BR/docs/laboratorios/06-pagina-estatica-apache/README.md) · [Lab index](../../README.md) · [Previous lab](../05-zabbix-custom-dashboard/README.md) · [Next lab](../07-dhcp-reservation-and-ip-address-persistence/README.md)
+
 ## Overview
 
 This laboratory focuses on deploying and customizing a static web page using Apache HTTP Server on the Debian server.
 
-Unlike the previous laboratories, this server is connected to the main local network:
+As in Lab 05, this server is connected to the main local network, unlike Labs 01–04:
 
 ```text
 Network: 192.168.1.0/24
@@ -631,7 +633,7 @@ Response time for step "Apache2 Homepage"
 of scenario "Apache2 Web Server"
 ```
 
-It measures how long Apache takes to respond to the HTTP request.
+It measures the HTTP response time observed by the scenario, not only Apache's internal processing time.
 
 The dashboard widget was configured as:
 
@@ -688,7 +690,7 @@ The following screenshot shows the completed dashboard with the additional monit
 
 ## Monitoring Relationship
 
-The laboratory now has a complete relationship between the web service and the monitoring system:
+At this stage, the laboratory has a complete relationship between the web service and the monitoring system:
 
 ```text
 Debian Server
@@ -744,7 +746,7 @@ The dashboard provides additional visibility into:
 
 ## Result
 
-The Debian server now provides a custom static web page through Apache and exposes the service through the Zabbix monitoring environment.
+At this stage, the Debian server provided a custom static web page through Apache and exposed service monitoring through Zabbix.
 
 The laboratory demonstrates the relationship between:
 
@@ -783,8 +785,8 @@ The page also serves as a practical representation of the laboratory itself, com
 
 **Completed**
 
-The Apache web service is operational, the custom static page is deployed, and the service is integrated into the Zabbix dashboard through web monitoring and response-time visualization.
+At this historical stage, the Apache web service was operational, the custom static page was deployed, and the service was integrated into the Zabbix dashboard through web monitoring and response-time visualization.
 
-[Screenshot gallery](../../../assets/images/06-apache-static-web-page/README.md)
+[Screenshot gallery](gallery.md)
 
 [Lab index](../../README.md) · [Repository overview](../../../README.md)

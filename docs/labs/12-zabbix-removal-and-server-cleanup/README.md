@@ -1,5 +1,7 @@
 # Lab 12 - Zabbix Removal and Server Cleanup
 
+[Português (Brasil)](../../../pt-BR/docs/laboratorios/12-remocao-do-zabbix-e-limpeza-do-servidor/README.md) · [Lab index](../../README.md) · [Previous lab](../11-migrating-the-zabbix-monitoring-server-to-a-virtual-machine/README.md) · [Next lab](../13-grafana-custom-monitoring-dashboard/README.md)
+
 ## Overview
 
 After migrating the Zabbix monitoring environment to a dedicated Debian virtual machine, the physical Debian Server no longer needed to run the Zabbix Server stack.
@@ -52,7 +54,7 @@ Physical Debian Server
 └── Zabbix Agent
 ```
 
-The physical server is now dedicated to hosting future infrastructure services, while the monitoring VM is responsible for monitoring them.
+The physical server became dedicated to hosting future infrastructure services, while the monitoring VM is responsible for monitoring them.
 
 ---
 
@@ -212,7 +214,7 @@ The only result was:
 zabbix-agent.service loaded active running Zabbix Agent
 ```
 
-This confirmed that the Zabbix Agent was the only remaining monitoring service.
+This confirmed that, among the services searched, the Zabbix Agent was the only remaining monitoring service.
 
 ---
 
@@ -305,7 +307,7 @@ Debian Monitoring Server
 └── Grafana
 ```
 
-The physical server is now free to host future infrastructure services without running its own monitoring stack.
+The physical server became free to host future infrastructure services without running its own monitoring stack.
 
 New services installed on the physical server can be monitored centrally by the dedicated monitoring VM.
 
@@ -330,7 +332,7 @@ New services installed on the physical server can be monitored centrally by the 
 
 The monitoring architecture was successfully separated from the physical infrastructure server.
 
-The physical Debian Server now provides a clean base for future infrastructure services, while the dedicated Debian Monitoring Server centralizes Zabbix and Grafana.
+At this stage, the physical Debian Server provided a clean base for future infrastructure services, while the dedicated Debian Monitoring Server centralized Zabbix and Grafana.
 
 This separation reduces unnecessary resource consumption on the physical server and establishes a clearer architecture for future labs.
 

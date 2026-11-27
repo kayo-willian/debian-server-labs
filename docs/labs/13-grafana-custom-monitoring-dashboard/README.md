@@ -1,5 +1,7 @@
 # Lab 13 - Grafana Custom Monitoring Dashboard
 
+[Português (Brasil)](../../../pt-BR/docs/laboratorios/13-dashboard-personalizado-grafana/README.md) · [Lab index](../../README.md) · [Previous lab](../12-zabbix-removal-and-server-cleanup/README.md) · [Next lab](../14-bind9-dns-server/README.md)
+
 ## Overview
 
 This lab focuses on rebuilding and progressively developing a custom monitoring dashboard using Grafana and Zabbix.

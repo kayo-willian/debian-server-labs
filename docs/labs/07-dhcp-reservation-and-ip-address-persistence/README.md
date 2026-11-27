@@ -1,5 +1,7 @@
 # Lab 07 - DHCP Reservation and IP Address Persistence
 
+[Português (Brasil)](../../../pt-BR/docs/laboratorios/07-reserva-dhcp-e-persistencia-de-ip/README.md) · [Lab index](../../README.md) · [Previous lab](../06-apache-static-web-page/README.md) · [Next lab](../08-grafana-zabbix-integration/README.md)
+
 > Privacy note: personal network identifiers in this historical record are redacted; the recorded topology, commands and observations are otherwise retained.
 
 ## Overview
@@ -222,7 +224,7 @@ A reservation was created on the router:
 | MAC Address | `xx:xx:xx:xx:xx:xx` |
 | Reserved IP | `192.168.1.117`     |
 
-The router was configured to always associate this MAC address with `192.168.1.117`.
+The router was configured to associate this MAC address with `192.168.1.117`.
 
 ---
 
@@ -286,7 +288,7 @@ The intended final configuration is:
 
 The Debian Server remains a DHCP client.
 
-The router is responsible for ensuring that the server receives `192.168.1.117`.
+The router is responsible for the expected assignment of `192.168.1.117`.
 
 ---
 
@@ -399,6 +401,6 @@ This provides a predictable server address without requiring a manually configur
 
 **Completed**
 
-The Debian Server now has a DHCP reservation configured on the network router, providing a stable IP address for the infrastructure laboratory.
+At this historical stage, the Debian Server had a DHCP reservation configured on the network router, providing a predictable IP address for the infrastructure laboratory.
 
 [Lab index](../../README.md) · [Repository overview](../../../README.md)

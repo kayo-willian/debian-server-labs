@@ -1,5 +1,7 @@
 # Lab 14 - BIND9 DNS Server
 
+[Português (Brasil)](../../../pt-BR/docs/laboratorios/14-servidor-dns-bind9/README.md) · [Lab index](../../README.md) · [Previous lab](../13-grafana-custom-monitoring-dashboard/README.md)
+
 ## Objective
 
 Set up a DNS server using BIND9 on a physical Debian server, configure forward and reverse DNS zones, test DNS resolution from another machine on the network, and integrate DNS monitoring with Zabbix.
@@ -78,7 +80,7 @@ Validate the configuration:
 sudo named-checkconf
 ```
 
-No output indicates that the configuration syntax is valid.
+No output, with a successful exit status, indicates that the configuration passed the syntax check.
 
 ## 3. Create DNS Zones
 
@@ -270,7 +272,7 @@ Result:
 117.1.168.192.in-addr.arpa.    604800    IN    PTR    ns1.example.lan.
 ```
 
-This confirms that the reverse zone is working.
+This confirms that the reverse zone works for the tested query.
 
 ## 9. Test DNS from Another Machine
 
@@ -330,7 +332,7 @@ Result:
 53 (domain) open
 ```
 
-BIND9 listens on both UDP/53 and TCP/53.
+BIND9 listens on both UDP/53 and TCP/53 in this configuration. A UDP test with nc alone does not establish a valid DNS response.
 
 Check the listeners directly on the DNS server:
 
@@ -382,7 +384,7 @@ Result:
 192.168.1.117
 ```
 
-This confirms that Zabbix can remotely execute the DNS health check through the Zabbix Agent.
+This confirms that Zabbix can remotely request the DNS health check through the Zabbix Agent.
 
 ## 12. Zabbix Item
 
@@ -417,13 +419,13 @@ Expression:
 last(/Debian Server/dns.example.lan)<>"192.168.1.117"
 ```
 
-The trigger allows Zabbix to identify when the expected DNS resolution is no longer being returned.
+The trigger allows Zabbix to identify when the received DNS response differs from the expected value.
 
 ## Result
 
 The lab successfully implemented a functional BIND9 DNS server on the physical Debian machine.
 
-The environment now includes:
+The environment documented at this stage includes:
 
 * Forward DNS zone
 * Reverse DNS zone

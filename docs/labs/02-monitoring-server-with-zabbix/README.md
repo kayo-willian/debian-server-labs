@@ -1,5 +1,7 @@
 # Lab 02: Monitoring Server with Zabbix
 
+[Português (Brasil)](../../../pt-BR/docs/laboratorios/02-servidor-de-monitoramento-zabbix/README.md) · [Lab index](../../README.md) · [Previous lab](../01-installation-configuration-ssh/README.md) · [Next lab](../03-firewall-access-control/README.md)
+
 Hands-on laboratory focused on deploying a complete monitoring solution on a resource constrained physical Debian Server, covering database preparation, repository configuration, service installation, web interface setup, distributed agent monitoring, and data retention management.
 
 This lab documents the complete path from an empty Debian Server to a functional monitoring system observing two hosts over the network, including every error encountered and resolved during the process.
@@ -25,13 +27,13 @@ The objectives of this lab were:
 
 A monitoring system continuously collects measurements from computers and network equipment, stores them, evaluates rules against them, and notifies administrators when something breaks or is about to break.
 
-Without monitoring, an administrator only learns about a failure when a user complains. With monitoring, the system detects the failure itself, records when it started, and can notify responsible people automatically.
+Without monitoring, an administrator may only learn about a failure when a user complains. With monitoring, the system can detect the failure, record when it started, and notify responsible people automatically.
 
 Zabbix is an enterprise grade open source monitoring solution. It was chosen for this lab because it is widely used in the job market, runs acceptably on modest hardware when correctly tuned, and exposes every fundamental monitoring concept: hosts, items, triggers, events, alerts, dashboards, and templates.
 
 ### Why This Matters for Network Administration
 
-Monitoring is a daily activity in network operations. Almost every infrastructure job expects familiarity with at least one monitoring platform. The concepts learned here transfer directly to any other tool because the concepts, not the product, are the actual skill.
+Monitoring is a daily activity in network operations. Familiarity with monitoring platforms is important in infrastructure roles. The concepts learned here transfer directly to any other tool because the concepts, not the product, are the actual skill.
 
 ---
 
@@ -68,7 +70,7 @@ The operating system version was confirmed before choosing the repository packag
 cat /etc/os-release
 ```
 
-This step matters because repository package names include the target distribution version. Installing a package built for a different Debian release causes dependency errors.
+This step matters because repository package names include the target distribution version. Installing a package built for a different Debian release can cause dependency errors.
 
 ### Network
 
@@ -169,7 +171,7 @@ The version determines which Zabbix repository package must be downloaded in a l
 
 ### Step 2: Create a Swap File
 
-The server has 2 GB of RAM and will host a database, a PHP application, and a monitoring server simultaneously. A swap file acts as an emergency overflow area and prevents the out of memory killer from terminating services.
+The server has 2 GB of RAM and will host a database, a PHP application, and a monitoring server simultaneously. A swap file acts as additional emergency space and reduces the risk of the out of memory killer terminating services.
 
 ```bash
 sudo fallocate -l 1G /swapfile
@@ -180,9 +182,9 @@ echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
 free -h
 ```
 
-Verification: `free -h` must list the swap total as approximately 1 GiB, and the `/etc/fstab` entry guarantees it survives a reboot.
+Verification: `free -h` must list the swap total as approximately 1 GiB, and the `/etc/fstab` entry configures activation after reboot.
 
-Why swap exists: when physical RAM is exhausted the system starts moving inactive memory pages to disk. Without swap, memory exhaustion terminates processes abruptly. With swap, the system degrades gracefully instead.
+Why swap exists: under memory pressure the system can move inactive pages to disk. Without swap, memory exhaustion can terminate processes abruptly. Swap provides an additional margin, although slowdowns and out-of-memory termination can still occur.
 
 ### Step 3: Install and Verify the Database Server
 
@@ -195,7 +197,7 @@ ss -tulpn | grep 3306
 
 Expected result: the service shows `active (running)` and the socket listens on `127.0.0.1:3306`.
 
-The listen address deserves attention: MariaDB binds to `127.0.0.1` by default, which means it accepts connections only from the local machine. This is correct for this lab because the Zabbix server and frontend run on the same host. A database exposed to the network without need is a security defect.
+The listen address deserves attention: in this configuration MariaDB binds to `127.0.0.1`, which means it accepts TCP connections only from the local machine. This is correct for this lab because the Zabbix server and frontend run on the same host. A database exposed to the network without need is a security defect.
 
 ### Step 4: Create the Database and the Application User
 
@@ -215,7 +217,7 @@ Explanation of each statement:
 
 | Statement | Why it exists |
 | --------- | ------------- |
-| `CREATE DATABASE ... utf8mb4 ... utf8mb4_bin` | Zabbix requires this exact character set and binary collation for correct storage and comparisons |
+| `CREATE DATABASE ... utf8mb4 ... utf8mb4_bin` | Zabbix uses this character set and binary collation for correct storage and comparisons |
 | `CREATE USER ... @'localhost'` | Creates a dedicated account restricted to local connections, following the principle of least privilege |
 | `GRANT ALL PRIVILEGES ON zabbix.*` | Grants rights only over the Zabbix database, not over the entire database server |
 | `SET GLOBAL log_bin_trust_function_creators = 1` | Temporarily permits the schema import to create stored functions |
@@ -234,7 +236,7 @@ sudo dpkg -i zabbix-release_latest+debian13_all.deb
 sudo apt update
 ```
 
-The `apt update` after installing the repository package is mandatory. Skipping it causes the next installation step to fail with package not found errors, even though the package names are correct. This happened in practice and is documented in the troubleshooting section.
+The `apt update` after installing the repository package is necessary. Skipping it can cause the next installation step to fail with package not found errors, even though the package names are correct. This happened in practice and is documented in the troubleshooting section.
 
 Verification that the repository is active:
 
@@ -280,13 +282,13 @@ Locate the actual path of the schema file inside the installed package:
 dpkg -L zabbix-sql-scripts | grep server.sql.gz
 ```
 
-In current Zabbix versions the file is located at:
+In the version used in this lab the file is located at:
 
 ```text
 /usr/share/zabbix/sql-scripts/mysql/server.sql.gz
 ```
 
-Older documentation frequently cites `/usr/share/zabbix-sql-scripts/mysql/server.sql.gz`, which no longer exists. When a tutorial references a path that does not exist, listing the files of the owning package with `dpkg -L` reveals the correct location. This is a generalizable troubleshooting technique.
+Older documentation frequently cites `/usr/share/zabbix-sql-scripts/mysql/server.sql.gz`, which did not exist in this installation. When a tutorial references a path that does not exist, listing the files of the owning package with `dpkg -L` reveals the correct location. This is a generalizable troubleshooting technique.
 
 Run the import with the path returned by the command above:
 
@@ -294,7 +296,7 @@ Run the import with the path returned by the command above:
 zcat /usr/share/zabbix/sql-scripts/mysql/server.sql.gz | mysql --default-character-set=utf8mb4 -uzabbix -p zabbix
 ```
 
-The command takes several minutes on this hardware and appears frozen near the end. This is normal.
+The command takes several minutes on this hardware and appears frozen near the end. This was observed in this lab.
 
 Verify the import:
 
@@ -302,7 +304,7 @@ Verify the import:
 sudo mysql -e "USE zabbix; SHOW TABLES;" | wc -l
 ```
 
-A count above 150 confirms the schema was fully imported.
+A count above 150 indicates the tables were created, but does not by itself establish a complete import.
 
 After the import, restore the runtime flag:
 
@@ -344,7 +346,7 @@ systemctl status apache2 --no-pager
 
 Both must show `active (running)`.
 
-If the Zabbix server fails to start, the log files contain the reason in almost every case:
+If the Zabbix server fails to start, the log files are an important source for identifying the cause:
 
 ```bash
 journalctl -u zabbix-server -n 30 --no-pager
@@ -372,7 +374,7 @@ The installation wizard requests the database connection parameters:
 | Password             | `<STRONG_DB_PASSWORD>` |
 | Database TLS         | Disabled               |
 
-TLS is unnecessary here because the connection never leaves the server: both processes run on the same machine.
+Database TLS was disabled in this lab because the connection stays on the server: both processes run on the same machine.
 
 The next screen defines the instance name and default timezone. Set the timezone to the real local zone so event timestamps and graphs match reality.
 
@@ -382,7 +384,7 @@ On completion the wizard writes the connection settings to:
 /etc/zabbix/web/zabbix.conf.php
 ```
 
-This file is how the frontend remembers the database parameters. Reading this file after installation is a quick way to recall which credentials the frontend uses.
+This file is how the frontend remembers the database parameters. Reading this file with authorized access after installation can identify which credentials the frontend uses; its contents must remain protected.
 
 ### Step 11: First Login and Immediate Hardening
 
@@ -397,7 +399,7 @@ The username has a capital A. The lowercase form does not authenticate.
 
 This password is public knowledge because it is identical in every new Zabbix installation. Changing it is not optional. Navigate to Users, Users, select Admin, and change the password to a value stored in a password manager.
 
-If repeated failed logins occur, Zabbix temporarily locks the account. Waiting briefly before retrying resolves the lockout.
+If repeated failed logins occur, Zabbix may temporarily lock the account. Waiting for the lockout period before retrying allows authentication to resume.
 
 ---
 
@@ -427,8 +429,8 @@ Field meanings:
 | ------------- | ----------------------------------------------------------------------- |
 | `Server`      | Addresses allowed to query this agent (passive checks)                  |
 | `ServerActive`| Address the agent pushes data to (active checks)                        |
-| `Hostname`    | Name the agent identifies itself with. Must match the frontend exactly  |
-| `ListenIP`    | Network address the agent binds to. Default is loopback only           |
+| `Hostname`    | Name the agent identifies itself with. Must match the frontend exactly for active checks  |
+| `ListenIP`    | Network address the agent binds to           |
 
 ```bash
 sudo systemctl restart zabbix-agent
@@ -436,13 +438,13 @@ sudo systemctl enable zabbix-agent
 systemctl status zabbix-agent --no-pager
 ```
 
-Verification that the agent is listening on all interfaces:
+Verification that the agent is listening on all IPv4 interfaces:
 
 ```bash
 ss -tulpn | grep 10050
 ```
 
-The output must show `0.0.0.0:10050`. If it shows `127.0.0.1:10050`, the ListenIP directive was not applied and the server cannot reach the agent over the network.
+The expected output in this lab is `0.0.0.0:10050`. If it shows only `127.0.0.1:10050`, the agent is restricted to loopback and the remote server cannot reach it on that port.
 
 ### Step 13: Register the Host in the Frontend
 
@@ -450,7 +452,7 @@ Navigate to Data collection, then Hosts, then Create host.
 
 | Field             | Value                          |
 | ----------------- | ------------------------------ |
-| Host name         | `<HOSTNAME>` (must equal the agent `Hostname`) |
+| Host name         | `<HOSTNAME>` (must equal the agent `Hostname` for active checks) |
 | Templates         | Linux by Zabbix agent          |
 | Host groups       | Linux servers                  |
 | Interface         | Agent, `<WORKSTATION_IP>`, port 10050 |
@@ -458,7 +460,7 @@ Navigate to Data collection, then Hosts, then Create host.
 
 The template field is the powerful part. A template is a predefined bundle of items, graphs, and triggers. Attaching `Linux by Zabbix agent` instantly provides dozens of CPU, memory, disk, and network metrics without manual definition. In production, templates are how consistent monitoring scales across hundreds of hosts.
 
-The `Hostname` value in the agent configuration and the host name in the frontend are matched literally. A single character of difference makes the server reject the agent data.
+The `Hostname` value in the agent configuration and the host name in the frontend are matched literally for active checks. A single character of difference can prevent processing of those data.
 
 ### Step 14: Verify Server to Agent Communication
 
@@ -469,9 +471,9 @@ sudo apt install zabbix-get -y
 zabbix_get -s <WORKSTATION_IP> -k system.hostname
 ```
 
-A returned hostname proves the full path works: server process, network, firewall, agent process, agent configuration. This separates network problems from Zabbix configuration problems.
+A returned hostname demonstrates that the utility can query the agent over the network, with the firewall and agent configuration permitting the query. This helps separate network problems from Zabbix server configuration problems.
 
-In the frontend, the Availability column for the new host changes the ZBX indicator to green within one or two minutes.
+In the frontend, the Availability column for the new host shows the ZBX indicator green after successful checks, observed within one or two minutes in this lab.
 
 Collected values are visible under Monitoring, Hosts, then Latest data. Ready made graphs are under Monitoring, Hosts, then Graphs.
 
@@ -479,14 +481,14 @@ Collected values are visible under Monitoring, Hosts, then Latest data. Ready ma
 
 ## 7. Data Retention
 
-By default Zabbix stores collected history for a long period. On a 32 GB disk this eventually becomes a storage incident. Retention is configured under Administration, Housekeeping.
+By default Zabbix stores collected history for a long period. On a 32 GB disk this can eventually become a storage incident. Retention is configured under Administration, Housekeeping.
 
 | Setting | Recommended value | Reason |
 | ------- | ----------------- | ------ |
 | History retention override | Enabled, 7d | Raw collected values occupy the most space |
 | Trend retention override | Enabled, 30d | Hourly aggregates are compact and still power long term graphs |
 
-History and trends are different data. History is every individual measurement. Trends are hourly averages, minimums, and maximums computed by Zabbix. Reducing history does not damage long term graphs because trends preserve the aggregate view.
+History and trends are different data. History is every individual measurement. Trends are hourly aggregates with averages, minimums, and maximums computed by Zabbix for numeric metrics. Reducing history retains the aggregate view for the trend retention period, but loses discarded raw measurement detail.
 
 ---
 
@@ -498,15 +500,15 @@ Immediately after installation a warning level problem appeared on the Zabbix se
 Linux: Number of installed packages has been changed
 ```
 
-This trigger compares the number of installed packages between evaluations. It exists to detect unauthorized software changes on monitored systems. In this lab it fired because dozens of packages were installed minutes earlier, which is expected and harmless.
+This trigger compares the number of installed packages between evaluations. It helps detect potentially unauthorized software changes on monitored systems. In this lab it fired because dozens of packages were installed minutes earlier, which is expected and harmless.
 
 This event demonstrates several concepts:
 
 | Concept | Observation |
 | ------- | ----------- |
-| Severity levels | The warning color reflects a Notice severity, informational rather than critical |
+| Severity levels | The warning color reflects the recorded severity, informational rather than critical |
 | Trigger purpose | Triggers encode operational expectations, such as software remaining unchanged |
-| Acknowledgment | Closing an event while writing the reason documents why it occurred, which is standard operations practice |
+| Acknowledgment | Recording the reason when acknowledging or closing an event documents why it occurred, which is standard operations practice |
 
 In production environments these low severity notices accumulate noise. Administrators tune or disable irrelevant triggers so that meaningful alerts remain visible. Alert fatigue is a real operational problem.
 
@@ -519,14 +521,14 @@ Every failure encountered during this lab, its cause, and its resolution.
 | Problem | Symptom | Cause | Resolution |
 | ------- | ------- | ----- | ---------- |
 | Zabbix packages not found | `apt install` fails for `zabbix-apache-conf` and `zabbix-sql-scripts` | `apt update` was not run after installing the repository package | Run `sudo apt update`, then repeat the installation |
-| Schema import fails | `server.sql.gz: No such file or directory` | Schema path changed in newer Zabbix versions | Locate the file with `dpkg -L zabbix-sql-scripts | grep server.sql.gz` |
+| Schema import fails | `server.sql.gz: No such file or directory` | Schema path changed in newer Zabbix versions | Locate the file with `dpkg -L zabbix-sql-scripts \| grep server.sql.gz` |
 | Frontend login rejected | Incorrect username or password message | Confusion between the database password and the initial web password | The initial web login is Admin with password zabbix, independent of database credentials |
 | Host URL confusion | Difficulty locating the host creation screen in the translated interface | Menu labels vary between translations | Reached via Data collection, then Hosts, then Create host |
 | Testing tool missing | `zabbix_get: command not found` | Utility ships in a separate package | `sudo apt install zabbix-get` |
 | Database connection test impossible | `curl: command not found` | Minimal install lacks curl | `sudo apt install curl` |
-| zabbix_server does not start | Service inactive | Most commonly wrong database credentials in the server configuration | Check `journalctl -u zabbix-server` and the server log, verify DBPassword |
+| zabbix_server does not start | Service inactive | Possible wrong database credentials in the server configuration | Check `journalctl -u zabbix-server` and the server log, verify DBPassword |
 
-The recurring lesson: when a package or file is not where documentation says it should be, ask the package manager where its files actually are. Package documentation ages, package managers do not lie.
+The recurring lesson: when a package or file is not where documentation says it should be, ask the package manager where its files actually are. Package documentation ages; installed package data helps verify the actual state.
 
 ---
 
@@ -562,12 +564,12 @@ The server runs the complete stack within 2 GB of RAM by applying deliberate red
 | No desktop environment | Saves hundreds of megabytes of RAM |
 | `CacheSize=64M` | Limits the Zabbix configuration cache |
 | `HistoryCacheSize=16M` | Limits the in memory history buffer |
-| 1 GB swap file | Safety margin when all tiers peak simultaneously |
+| 1 GB swap file | Additional margin when all tiers peak simultaneously |
 | Short retention periods | Keeps the database small on a 32 GB disk |
 
 Monitoring resource consumption of the monitoring server itself, using its own data, closes the loop: the system watches the machine that runs it.
 
-Physical care matters as much as configuration. This machine operates 24 hours a day plugged into wall power with an aged battery. Periodic physical inspection and awareness of battery swelling risk are part of running hardware as a server.
+Physical care matters as much as configuration. At the time of this record, this machine operated 24 hours a day plugged into wall power with an aged battery. Periodic physical inspection and awareness of battery swelling risk are part of running hardware as a server.
 
 ---
 
@@ -575,13 +577,13 @@ Physical care matters as much as configuration. This machine operates 24 hours a
 
 A monitoring stack is a three tier web application, and installing one is a complete exercise in service administration: database, application server, and interface must each be configured and verified independently before the whole functions.
 
-Two credential domains exist in every such system. The database user and the application user are unrelated, and treating them as the same thing produces avoidable confusion during setup.
+Two credential domains exist in this type of system. The database user and the application user are unrelated, and treating them as the same thing produces avoidable confusion during setup.
 
-The apt package index is refreshed per repository. Adding a repository without updating the index produces package not found errors that look like missing packages but are only stale metadata.
+The apt package index is refreshed per repository. Adding a repository without updating the index produces package not found errors that look like missing packages but can be stale metadata.
 
 Documentation that ships with software decays. The file locations in this lab differed from widely copied older guides. Locating real paths with package tools is more reliable than trusting tutorials.
 
-A monitoring system is not finished when its interface opens. It is finished when it proves it can detect failure. The agent stop and start test, the availability indicators, and the alert observation are what convert an installed program into an operational monitoring capability.
+A monitoring system is not finished when its interface opens. It is important to demonstrate that it can detect failure. The agent stop and start test, the availability indicators, and the alert observation are what convert an installed program into an operational monitoring capability.
 
 ---
 
@@ -603,6 +605,6 @@ Database backup with mysqldump and cron
 Host inventory and automation
 ```
 
-SNMP deserves emphasis. Network equipment such as switches, routers, access points, and printers generally cannot run a Zabbix agent. SNMP is the protocol family for monitoring them, which makes it essential for network administration work. A future lab will enable the SNMP daemon on this server and consume it from Zabbix through the Linux by SNMP template, exercising community configuration, port 161, and OID based data collection.
+SNMP deserves emphasis. Network equipment such as switches, routers, access points, and printers generally cannot run a Zabbix agent. SNMP is the protocol family for monitoring them, which makes it essential for network administration work. A future lab would enable the SNMP daemon on this server and consume it from Zabbix through the Linux by SNMP template, exercising community configuration, port 161, and OID based data collection.
 
 [Lab index](../../README.md) · [Repository overview](../../../README.md)

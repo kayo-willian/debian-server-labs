@@ -1,5 +1,7 @@
 # Lab 11 - Migrating the Zabbix Monitoring Server to a Virtual Machine
 
+[Português (Brasil)](../../../pt-BR/docs/laboratorios/11-migracao-do-servidor-zabbix-para-maquina-virtual/README.md) · [Lab index](../../README.md) · [Previous lab](../10-grafana-removal-and-resource-optimization/README.md) · [Next lab](../12-zabbix-removal-and-server-cleanup/README.md)
+
 Historical database passwords are masked in the commands and configuration below.
 
 ## Overview
@@ -221,7 +223,7 @@ creates a logical backup of the database.
 --single-transaction
 ```
 
-allows the dump to be created consistently without locking the entire database in the same way as a traditional locking dump.
+allows a consistent dump of transactional tables without locking the entire database in the same way as a traditional locking dump.
 
 ```text
 --routines
@@ -271,7 +273,7 @@ The result was:
 Backup OK
 ```
 
-This confirmed that the compressed database dump was not corrupted.
+This confirmed the integrity of the compressed file in the recorded test, not the logical completeness of the dump.
 
 ---
 
@@ -522,7 +524,7 @@ config_autoreg_tls
 connector
 ```
 
-This confirmed that the original Zabbix database had been successfully restored.
+This indicated that the original Zabbix database had been restored; application-level validation followed.
 
 ---
 
@@ -722,7 +724,7 @@ HTTP/1.1 302 Found
 Location: setup.php
 ```
 
-This proved that Apache and the Zabbix frontend were actually working.
+This demonstrated that Apache and the Zabbix frontend route were responding locally.
 
 ---
 
@@ -900,7 +902,7 @@ The monitoring services were configured to start automatically:
 sudo systemctl enable zabbix-server zabbix-agent apache2 mariadb
 ```
 
-The architecture was now persistent across VM reboots:
+The architecture was configured to persist across VM reboots:
 
 ```text
 MariaDB
@@ -1080,7 +1082,7 @@ valid_lft forever
 preferred_lft forever
 ```
 
-This confirms that the address is configured as a permanent/static address rather than a temporary DHCP lease.
+Together with the explicit static configuration, this supports that the address was not a temporary DHCP lease.
 
 The final `dhcpcd` configuration was also checked:
 
@@ -1157,7 +1159,7 @@ Ubuntu Host
     └── MariaDB
 ```
 
-The communication path is now:
+The communication path at this stage was:
 
 ```text
 Debian Physical Server
@@ -1182,13 +1184,13 @@ The migration preserved the existing Zabbix application state through a database
 
 The physical Debian server remained intact and became a monitored host.
 
-The new monitoring VM now has a fixed address:
+The new monitoring VM was assigned a fixed address:
 
 ```text
 192.168.1.219
 ```
 
-The physical server remains at:
+The physical server remained at:
 
 ```text
 192.168.1.117
@@ -1234,7 +1236,7 @@ At this point, the architecture can be considered:
               └──────────────────────────────┘
 ```
 
-The key architectural change is that **the physical Debian server is no longer responsible for running the monitoring platform. The virtual machine is now the dedicated Zabbix monitoring server, while the physical Debian machine is one of the systems being monitored.**
+The key architectural change is that **the physical Debian server was no longer responsible for running the monitoring platform. The virtual machine became the dedicated Zabbix monitoring server, while the physical Debian machine became one of the systems being monitored.**
 
 This separation also leaves the physical server available for future infrastructure projects without mixing those services with the monitoring platform.
 

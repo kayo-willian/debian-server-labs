@@ -1,5 +1,7 @@
 # Lab 01: Installation, Configuration and SSH
 
+[Português (Brasil)](../../../pt-BR/docs/laboratorios/01-instalacao-configuracao-ssh/README.md) · [Lab index](../../README.md) · [Next lab](../02-monitoring-server-with-zabbix/README.md)
+
 > Privacy note: personal network identifiers in this historical record are redacted; the recorded topology, commands and observations are otherwise retained.
 
 ## Objective
@@ -178,7 +180,7 @@ The interfaces were:
 
 ```text
 enp2s0
-wlx002e2d5b7b55
+wlxXXXXXXXXXXXX
 ```
 
 The routing table contained two possible paths to the same network.
@@ -187,7 +189,7 @@ The relevant routes were effectively:
 
 ```text
 192.168.1.0/24 dev enp2s0
-192.168.1.0/24 dev wlx002e2d5b7b55
+192.168.1.0/24 dev wlxXXXXXXXXXXXX
 ```
 
 Linux therefore had to decide which interface should be used when communicating with another `192.168.1.x` address.
@@ -201,7 +203,7 @@ enp2s0      metric 100
 Wi-Fi       metric 600
 ```
 
-Lower metrics are preferred.
+Lower metrics are preferred among comparable routes.
 
 Therefore, when Ubuntu attempted to reach:
 
@@ -416,7 +418,7 @@ Network:   192.168.1.0/24
 Wi-Fi:
 
 ```text
-Interface: wlx002e2d5b7b55
+Interface: wlxXXXXXXXXXXXX
 IP:        192.168.2.143/24
 Network:   192.168.2.0/24
 ```
@@ -446,7 +448,7 @@ The important interfaces were:
 
 ```text
 enp2s0
-wlx002e2d5b7b55
+wlxXXXXXXXXXXXX
 ```
 
 The resulting addressing was:
@@ -455,7 +457,7 @@ The resulting addressing was:
 enp2s0
 192.168.1.230/24
 
-wlx002e2d5b7b55
+wlxXXXXXXXXXXXX
 192.168.2.143/24
 ```
 
@@ -475,10 +477,10 @@ The relevant routes were:
 
 ```text
 default via 192.168.1.1 dev enp2s0 metric 100
-default via 192.168.2.1 dev wlx002e2d5b7b55 metric 600
+default via 192.168.2.1 dev wlxXXXXXXXXXXXX metric 600
 
 192.168.1.0/24 dev enp2s0 src 192.168.1.230 metric 100
-192.168.2.0/24 dev wlx002e2d5b7b55 src 192.168.2.143 metric 600
+192.168.2.0/24 dev wlxXXXXXXXXXXXX src 192.168.2.143 metric 600
 ```
 
 The important difference compared with the original configuration is that the two interfaces now belong to different networks.
@@ -512,7 +514,7 @@ ip route get 192.168.2.161
 The result was:
 
 ```text
-192.168.2.161 dev wlx002e2d5b7b55 src 192.168.2.143
+192.168.2.161 dev wlxXXXXXXXXXXXX src 192.168.2.143
 ```
 
 This is an important verification.
@@ -526,7 +528,7 @@ It proves that Ubuntu reaches:
 through:
 
 ```text
-wlx002e2d5b7b55
+wlxXXXXXXXXXXXX
 ```
 
 using:
@@ -576,7 +578,7 @@ The successful ping demonstrated that:
 * The Debian server had network connectivity.
 * Ubuntu could reach the laboratory subnet.
 * The two devices could communicate through Wi-Fi.
-* The router was forwarding the required traffic.
+* The network infrastructure permitted the required traffic.
 * The subnet configuration was working.
 * The routing decision on Ubuntu was correct.
 
@@ -799,7 +801,7 @@ ip route get 192.168.2.161
 The result showed:
 
 ```text
-dev wlx002e2d5b7b55
+dev wlxXXXXXXXXXXXX
 ```
 
 ### Step 7: Test connectivity
@@ -848,7 +850,7 @@ are two different IPv4 networks.
 
 ### Default Gateway
 
-The default gateway is the device used to reach networks outside the local subnet.
+The default gateway is the device used to reach networks outside the local subnet when no more specific route exists.
 
 For the Debian laboratory network:
 
@@ -896,7 +898,7 @@ The destination network determines which interface is appropriate.
 
 ### Route Metric
 
-A route metric is used to determine preference when multiple routes are available.
+A route metric is used to determine preference when multiple comparable routes are available.
 
 Lower values are preferred.
 
@@ -973,7 +975,7 @@ Network:
 
 ```text
 Interface:
-wlx002e2d5b7b55
+wlxXXXXXXXXXXXX
 
 IP:
 192.168.2.143/24

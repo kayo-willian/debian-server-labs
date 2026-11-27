@@ -1,5 +1,7 @@
 # Lab 09 - Grafana Monitoring Dashboard
 
+[Português (Brasil)](../../../pt-BR/docs/laboratorios/09-dashboard-de-monitoramento-grafana/README.md) · [Lab index](../../README.md) · [Previous lab](../08-grafana-zabbix-integration/README.md) · [Next lab](../10-grafana-removal-and-resource-optimization/README.md)
+
 ## Overview
 
 This lab focused on creating a monitoring dashboard with Grafana using data collected by the existing Zabbix environment.

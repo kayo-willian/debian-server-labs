@@ -2,9 +2,11 @@
 
 > Privacy note: personal network identifiers in this historical record are redacted; the recorded topology, commands and observations are otherwise retained.
 
-[Repository overview](../README.md)
+[Repository overview](../README.md) · [Português (Brasil)](../pt-BR/docs/README.md)
 
 The lab numbers follow the order of the original experiments.
+
+[Architecture](architecture.md) · [Infrastructure timeline](infrastructure-timeline.md) · [Learning roadmap](learning-roadmap.md) · [Command reference](command-reference.md)
 
 - [Lab 01 — Installation, Configuration and SSH](labs/01-installation-configuration-ssh/README.md)
 - [Lab 02 — Monitoring Server with Zabbix](labs/02-monitoring-server-with-zabbix/README.md)
@@ -25,7 +27,7 @@ The lab numbers follow the order of the original experiments.
 
 Hands-on Debian Server labs focused on Linux administration, networking, services, security, monitoring, and infrastructure.
 
-This repository documents practical experiments and learning activities performed using a physical Debian Server.
+This repository documents practical experiments and learning activities performed using a physical Debian Server and, in the later monitoring stages, a dedicated Debian VM.
 
 The purpose of this repository is twofold: to demonstrate practical experience and to build a personal technical reference that can be consulted during future classes, laboratories, troubleshooting, and system administration tasks.
 
@@ -116,7 +118,7 @@ The table describes the main local network after the DHCP reservation recorded i
 
 The Debian Server operated on the `192.168.1.0/24` network.
 
-The administration workstation can communicate with the server directly through the main LAN.
+At that stage, the administration workstation could communicate with the server directly through the main LAN.
 
 The recorded Debian Server configuration included:
 
@@ -200,7 +202,7 @@ Learning how to locate and use official documentation is itself part of the admi
 
 ## Physical Server
 
-Unlike the Ubuntu Server Labs repository, which uses a virtual machine, this project uses a physical computer as the server.
+Unlike the Ubuntu Server Labs repository, which uses a virtual machine, this project began with a physical computer as the server and later moved monitoring to a dedicated VM.
 
 This provides an opportunity to work with aspects of real hardware and physical server administration, including:
 
