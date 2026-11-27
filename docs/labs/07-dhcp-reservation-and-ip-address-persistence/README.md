@@ -1,5 +1,7 @@
 # Lab 07 - DHCP Reservation and IP Address Persistence
 
+> Privacy note: personal network identifiers in this historical record are redacted; the recorded topology, commands and observations are otherwise retained.
+
 ## Overview
 
 This lab documents the configuration of a DHCP reservation for the Debian Server on the local network.
@@ -210,14 +212,14 @@ The Zyxel router provides a DHCP reservation table.
 The server's MAC address was identified as:
 
 ```text
-dc:35:f1:b3:9a:1a
+xx:xx:xx:xx:xx:xx
 ```
 
 A reservation was created on the router:
 
 | Parameter   | Value               |
 | ----------- | ------------------- |
-| MAC Address | `dc:35:f1:b3:9a:1a` |
+| MAC Address | `xx:xx:xx:xx:xx:xx` |
 | Reserved IP | `192.168.1.117`     |
 
 The router was configured to always associate this MAC address with `192.168.1.117`.
@@ -272,7 +274,7 @@ The intended final configuration is:
                          |
                  DHCP Reservation
                          |
-              MAC: dc:35:f1:b3:9a:1a
+              MAC: xx:xx:xx:xx:xx:xx
                          |
                   192.168.1.117
                          |
@@ -386,7 +388,7 @@ The Debian Server can continue using DHCP while the router reserves:
 for its network interface:
 
 ```text
-dc:35:f1:b3:9a:1a
+xx:xx:xx:xx:xx:xx
 ```
 
 This provides a predictable server address without requiring a manually configured static IP on Debian.

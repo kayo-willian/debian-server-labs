@@ -1,5 +1,7 @@
 # Debian Server lab documentation
 
+> Privacy note: personal network identifiers in this historical record are redacted; the recorded topology, commands and observations are otherwise retained.
+
 [Repository overview](../README.md)
 
 The lab numbers follow the order of the original experiments.
@@ -109,7 +111,7 @@ The table describes the main local network after the DHCP reservation recorded i
 
 | Network                     | Subnet           | Purpose                                                       |
 | --------------------------- | ---------------- | ------------------------------------------------------------- |
-| Familia Silva               | `192.168.1.0/24` | Main network and Debian Server laboratory environment |
+| [redacted SSID]               | `192.168.1.0/24` | Main network and Debian Server laboratory environment |
 | Previous Debian Lab Network | `192.168.2.0/24` | Isolated network used during Labs 01-04                       |
 
 The Debian Server operated on the `192.168.1.0/24` network.
@@ -137,7 +139,7 @@ The reservation associates the server's network interface with its assigned addr
 | Parameter          | Value               |
 | ------------------ | ------------------- |
 | Interface          | `wlan0`             |
-| MAC Address        | `dc:35:f1:b3:9a:1a` |
+| MAC Address        | `xx:xx:xx:xx:xx:xx` |
 | Reserved Address   | `192.168.1.117`     |
 | Gateway            | `192.168.1.1`       |
 | Address Assignment | DHCP                |

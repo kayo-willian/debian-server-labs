@@ -1,5 +1,7 @@
 # Lab 01: Installation, Configuration and SSH
 
+> Privacy note: personal network identifiers in this historical record are redacted; the recorded topology, commands and observations are otherwise retained.
+
 ## Objective
 
 The objective of this lab was to install Debian Server on a physical machine, configure it as a headless Linux server, establish network connectivity, create a dedicated laboratory subnet, and remotely administer the server through SSH.
@@ -280,7 +282,7 @@ The network separation was created using the router's wireless configuration.
 The router provides the main network through the primary SSID:
 
 ```text
-Familia Silva
+[redacted SSID]
 ```
 
 The dedicated laboratory SSID was:
